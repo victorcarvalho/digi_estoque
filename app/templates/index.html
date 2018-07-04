@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ usuario.nome_usuario }}!</h1>
+    {% for item in itens %}
+    <div><p>{{ item.descricao }} says: <b>{{ item.unidade }}</b></p></div>
+    {% endfor %}
+{% endblock %}
