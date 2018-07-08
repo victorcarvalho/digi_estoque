@@ -25,8 +25,8 @@ class User(UserMixin, db.Model):
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), index=True, unique=True)
-    unit = db.Column(db.String(8), index=True, unique=True)
+    name = db.Column(db.String(50), index=True)
+    unit = db.Column(db.String(8), index=True)
     quantity = db.Column(db.Float)
 
     def __repr__(self):

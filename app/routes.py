@@ -84,3 +84,30 @@ def item_add():
         flash('Item cadastrado com sucesso')
         return redirect(url_for('index'))
     return render_template('item_add.html', title='Cadastrar item', form=form)
+
+
+@app.route('/item_list', methods=['GET', 'POST'])
+@login_required
+def item_list():
+    items = Item.query.all()
+    return render_template('item_list.html', title='Listar itens', items=items)
+
+@app.route('/item_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def item_delete(id):
+    item = Item.query.get_or_404(id)
+    db.session.delete(item)
+    db.session.commit()
+    flash('Item excluido com sucesso.')
+    return redirect(url_for('item_list'))
+
+@app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
+@login_required
+def item_dec(id):
+    item = Item.query.get_or_404(id)
+    item.set_quantity(item.quantity-1)
+    db.session.add(item)
+    db.session.commit()
+    flash('Item decrementado com sucesso.')
+    return redirect(url_for('item_list'))
+    # return render_template('item_list.html', title='Listar itens', items=items)
