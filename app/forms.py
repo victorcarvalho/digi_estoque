@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -27,3 +27,10 @@ def validate_email(self, email):
     if user is not None:
         user = User.query.filter_by(email=email.data).first()
         raise ValidationError('Por favor, use um e-mail diferente.')
+
+
+class ItemAddForm(FlaskForm):
+    name = StringField('Nome', validators=[DataRequired()])
+    unit = StringField('Unidade', validators=[DataRequired()])
+    quantity = FloatField('Quantidade', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')

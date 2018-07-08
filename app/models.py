@@ -22,3 +22,21 @@ class User(UserMixin, db.Model):
     @login.user_loader
     def load_user(id):
         return User.query.get(int(id))
+
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), index=True, unique=True)
+    unit = db.Column(db.String(8), index=True, unique=True)
+    quantity = db.Column(db.Float)
+
+    def __repr__(self):
+        return 'Item {}>'.format(self.name)
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_unit(self, unit):
+        self.unit = unit
+
+    def set_quantity(self, quantity):
+        self.quantity = quantity

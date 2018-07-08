@@ -6,9 +6,9 @@ from flask import request
 from werkzeug.urls import url_parse
 from app import app
 from app.forms import LoginForm
-from app.models import User
+from app.models import User, Item
 from app import db
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, ItemAddForm
 
 
 @app.route('/')
@@ -67,3 +67,20 @@ def register():
         flash('Voce foi cadastrado com sucesso')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+
+@app.route('/item_add', methods=['GET', 'POST'])
+@login_required
+def item_add():
+    form = ItemAddForm()
+    if form.validate_on_submit():
+        item = Item()
+        item.set_name(form.name.data)
+        item.set_unit(form.unit.data)
+        item.set_quantity(form.quantity.data)
+        db.session.add(item)
+        db.session.commit()
+        flash('Item cadastrado com sucesso')
+        return redirect(url_for('index'))
+    return render_template('item_add.html', title='Cadastrar item', form=form)
