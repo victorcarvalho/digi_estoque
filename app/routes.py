@@ -15,18 +15,7 @@ from app.forms import RegistrationForm, ItemAddForm
 @app.route('/index')
 @login_required
 def index():
-    # usuario = {'nome_usuario': 'Joaozinho'}
-    itens = [
-        {
-            'descricao': 'arduino uno',
-            'unidade': 'UND'
-        },
-        {
-            'descricao': 'arduino mega',
-            'unidade': 'UND'
-        }
-    ]
-    return render_template('index.html', title='Home',itens=itens)
+    return render_template('index.html', title='Home')
 
 # the flask default method is only GET
 @app.route('/login', methods=['GET', 'POST'])
@@ -45,7 +34,6 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
-
 
 
 @app.route('/logout')
@@ -83,14 +71,14 @@ def item_add():
         db.session.commit()
         flash('Item cadastrado com sucesso')
         return redirect(url_for('index'))
-    return render_template('item_add.html', title='Cadastrar item', form=form)
+    return render_template('item/add.html', title='Cadastrar item', form=form)
 
 
 @app.route('/item_list', methods=['GET', 'POST'])
 @login_required
 def item_list():
     items = Item.query.all()
-    return render_template('item_list.html', title='Listar itens', items=items)
+    return render_template('item/list.html', title='Listar itens', items=items)
 
 @app.route('/item_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -99,7 +87,7 @@ def item_delete(id):
     db.session.delete(item)
     db.session.commit()
     flash('Item excluido com sucesso.')
-    return redirect(url_for('item_list'))
+    return redirect(url_for('/item_list'))
 
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -109,5 +97,4 @@ def item_dec(id):
     db.session.add(item)
     db.session.commit()
     flash('Item decrementado com sucesso.')
-    return redirect(url_for('item_list'))
-    # return render_template('item_list.html', title='Listar itens', items=items)
+    return redirect(url_for('/item_list'))
