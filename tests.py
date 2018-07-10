@@ -31,6 +31,8 @@ class ItemModelCase(unittest.TestCase):
         i = Item()
         i.quantity = 10
         self.assertEqual(i.decrease_quantity(1), 9)
+        i.quantity = 10
+        self.assertNotEqual(i.decrease_quantity(1), 9)
 
 
 if __name__ == '__main__':
