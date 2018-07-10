@@ -1,7 +1,7 @@
-from app import db
-from app import login
+from app import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
 
 
 class User(UserMixin, db.Model):
@@ -24,22 +24,12 @@ class User(UserMixin, db.Model):
         return User.query.get(int(id))
 
 
-class Room(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), index=True)
-    items = db.relationship('Item')
-    # items = db.relationship('Item', backref='item_room', lazy='dynamic')
-
-    def __repr__(self):
-        return 'Nome {}>'.format(self.name)
-
-
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), index=True)
-    unit = db.Column(db.String(8), index=True)
+    unit = db.Column(db.String(8))
     quantity = db.Column(db.Float)
-    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
+    room = db.Column(db.String(20), index=True)
 
     def __repr__(self):
         return 'Nome {}>'.format(self.name)
@@ -52,6 +42,9 @@ class Item(db.Model):
 
     def set_quantity(self, quantity):
         self.quantity = quantity
+
+    def set_room(self, room):
+        self.room = room
 
     def decrease_quantity(self, quantity):
         self.quantity = self.quantity - quantity

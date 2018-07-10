@@ -5,8 +5,9 @@
     <thead class="thead-dark">
    		<tr>
           <th>Quantidade</th>
-          <th>Unidade</th>
        		<th>Nome</th>
+          <th>Unidade</th>
+          <th>Local</th>
           <th>Acao</th>
    		</tr>
    	</thead>
@@ -14,8 +15,9 @@
    		{% for item in items %}
    		<tr>
           <td id="quantitidade">{{ item.quantity }}</td>
-       		<td id="unidade">{{ item.unit }}</td>
           <td id="nome">{{ item.name }}</td>
+          <td id="unidade">{{ item.unit }}</td>
+          <td id="local">{{ item.room }}</td>
           <td id="buttons">
             <a href="{{ url_for('item_delete', id=item.id) }}">Excluir</a>
             <a href="{{ url_for('item_dec', id=item.id) }}">Decrementar</a>

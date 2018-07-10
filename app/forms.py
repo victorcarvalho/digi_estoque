@@ -29,14 +29,11 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Por favor, use um e-mail diferente.')
 
 
-class RoomAddForm(FlaskForm):
-    name = StringField('Nome', validators=[DataRequired()])
-    submit = SubmitField('Cadastrar')
-
-
 class ItemAddForm(FlaskForm):
     name = StringField('Nome', validators=[DataRequired()])
-    unit = StringField('Unidade', validators=[DataRequired()])
     quantity = FloatField('Quantidade', validators=[DataRequired()])
-    # language = SelectField(u'Programming Language', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
+    unit = SelectField('Unidade', choices = [('UND', 'UND'), ('CX', 'CX')])
+    room = SelectField('Local', choices = [('Container 1 (Mec)', 'Container 1 (Mec)'),
+        ('Container 2 (Elet)', 'Container 2 (Elet)')])
     submit = SubmitField('Cadastrar')
+    

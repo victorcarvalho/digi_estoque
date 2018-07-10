@@ -1,14 +1,10 @@
-from flask import render_template, flash, redirect, url_for
-from flask_login import logout_user
-from flask_login import current_user, login_user
-from flask_login import login_required
-from flask import request
+from flask import render_template, flash, redirect, url_for, request
+from flask_login import logout_user, current_user, login_user, login_required
 from werkzeug.urls import url_parse
-from app import app
-from app.forms import LoginForm
-from app.models import User, Item, Room
-from app import db
-from app.forms import RegistrationForm, ItemAddForm
+from app import app, db
+from app.forms import LoginForm, RegistrationForm, ItemAddForm
+from app.models import User, Item
+
 
 
 @app.route('/')
@@ -26,7 +22,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Usuario ou senha invalidos')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -57,7 +53,6 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-
 @app.route('/item_add', methods=['GET', 'POST'])
 @login_required
 def item_add():
@@ -67,10 +62,11 @@ def item_add():
         item.set_name(form.name.data)
         item.set_unit(form.unit.data)
         item.set_quantity(form.quantity.data)
+        item.set_room(form.room.data)
         db.session.add(item)
         db.session.commit()
         flash('Item cadastrado com sucesso')
-        return redirect(url_for('index'))
+        return redirect(url_for('item_list'))
     return render_template('item/add.html', title='Cadastrar item', form=form)
 
 
@@ -79,6 +75,7 @@ def item_add():
 def item_list():
     items = Item.query.all()
     return render_template('item/list.html', title='Listar itens', items=items)
+
 
 @app.route('/item_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
