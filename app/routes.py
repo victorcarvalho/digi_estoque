@@ -6,7 +6,7 @@ from flask import request
 from werkzeug.urls import url_parse
 from app import app
 from app.forms import LoginForm
-from app.models import User, Item
+from app.models import User, Item, Room
 from app import db
 from app.forms import RegistrationForm, ItemAddForm
 
@@ -87,14 +87,14 @@ def item_delete(id):
     db.session.delete(item)
     db.session.commit()
     flash('Item excluido com sucesso.')
-    return redirect(url_for('/item_list'))
+    return redirect(url_for('item_list'))
 
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required
 def item_dec(id):
     item = Item.query.get_or_404(id)
-    item.set_quantity(item.quantity-1)
+    item.decrease_quantity(1) # decrementa quantidade em uma unidade
     db.session.add(item)
     db.session.commit()
     flash('Item decrementado com sucesso.')
-    return redirect(url_for('/item_list'))
+    return redirect(url_for('item_list'))

@@ -15,8 +15,8 @@
    		<tr>
           <td id="quantitidade">{{ item.quantity }}</td>
        		<td id="unidade">{{ item.unit }}</td>
+          <td id="nome">{{ item.name }}</td>
           <td id="buttons">
-            <td id="nome">{{ item.name }}</td>
             <a href="{{ url_for('item_delete', id=item.id) }}">Excluir</a>
             <a href="{{ url_for('item_dec', id=item.id) }}">Decrementar</a>
             <a href="asdf">Alterar</a>

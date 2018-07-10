@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -18,19 +18,25 @@ class RegistrationForm(FlaskForm):
         'Repita a senha', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Cadastrar')
 
-def validate_username(self, username):
-    user = User.query.filter_by(username=username.data).first()
-    if user is not None:
-        raise ValidationError('Por favor, use um nome de usuario diferente.')
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Por favor, use um nome de usuario diferente.')
 
-def validate_email(self, email):
-    if user is not None:
-        user = User.query.filter_by(email=email.data).first()
-        raise ValidationError('Por favor, use um e-mail diferente.')
+    def validate_email(self, email):
+        if user is not None:
+            user = User.query.filter_by(email=email.data).first()
+            raise ValidationError('Por favor, use um e-mail diferente.')
+
+
+class RoomAddForm(FlaskForm):
+    name = StringField('Nome', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')
 
 
 class ItemAddForm(FlaskForm):
     name = StringField('Nome', validators=[DataRequired()])
     unit = StringField('Unidade', validators=[DataRequired()])
     quantity = FloatField('Quantidade', validators=[DataRequired()])
+    # language = SelectField(u'Programming Language', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
     submit = SubmitField('Cadastrar')

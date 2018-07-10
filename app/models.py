@@ -23,14 +23,26 @@ class User(UserMixin, db.Model):
     def load_user(id):
         return User.query.get(int(id))
 
+
+class Room(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), index=True)
+    items = db.relationship('Item')
+    # items = db.relationship('Item', backref='item_room', lazy='dynamic')
+
+    def __repr__(self):
+        return 'Nome {}>'.format(self.name)
+
+
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), index=True)
     unit = db.Column(db.String(8), index=True)
     quantity = db.Column(db.Float)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
 
     def __repr__(self):
-        return 'Item {}>'.format(self.name)
+        return 'Nome {}>'.format(self.name)
 
     def set_name(self, name):
         self.name = name
@@ -40,3 +52,7 @@ class Item(db.Model):
 
     def set_quantity(self, quantity):
         self.quantity = quantity
+
+    def decrease_quantity(self, quantity):
+        self.quantity = self.quantity - quantity
+        return self.quantity
