@@ -4,11 +4,13 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
 
+
 class LoginForm(FlaskForm):
     username = StringField('Usuario', validators=[DataRequired()])
     password = PasswordField('Senha', validators=[DataRequired()])
     remember_me = BooleanField('Lembre-se de mim')
     submit = SubmitField('Entrar')
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Nome de usuario', validators=[DataRequired()])
@@ -36,4 +38,3 @@ class ItemAddForm(FlaskForm):
     room = SelectField('Local', choices = [('Container 1 (Mec)', 'Container 1 (Mec)'),
         ('Container 2 (Elet)', 'Container 2 (Elet)')])
     submit = SubmitField('Cadastrar')
-    

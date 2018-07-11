@@ -13,6 +13,7 @@ from app.models import User, Item
 def index():
     return render_template('index.html', title='Home')
 
+
 # the flask default method is only GET
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -85,6 +86,7 @@ def item_delete(id):
     db.session.commit()
     flash('Item excluido com sucesso.')
     return redirect(url_for('item_list'))
+
 
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required
