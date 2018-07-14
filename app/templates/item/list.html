@@ -27,7 +27,7 @@
      		{% for item in items %}
      		<tr>
             <td id="quantitidade">{{ item.quantity }}</td>
-            <td id="nome">{{ item.name }}</td>
+            <td id="nome"><b>{{ item.name }}</b></td>
             <td id="unidade">{{ item.unit }}</td>
             <td id="local">{{ item.room }}</td>
             <!-- <td id="buttons"> -->
@@ -42,7 +42,7 @@
               </a>
             </td>
             <td id="editar">
-              <a href="asdf">
+              <a href="{{ url_for('item_edit', id=item.id) }}">
                   <span class="glyphicon glyphicon-edit"></span>
               </a>
             </td>

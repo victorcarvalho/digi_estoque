@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import logout_user, current_user, login_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ItemAddForm
+from app.forms import LoginForm, RegistrationForm, ItemAddForm, ItemEditForm
 from app.models import User, Item
 
 
@@ -87,6 +87,28 @@ def item_delete(id):
     flash('Item excluido com sucesso.')
     return redirect(url_for('item_list'))
 
+
+@app.route('/item_edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def item_edit(id):
+    item = Item()
+    form = ItemEditForm()
+    item = Item.query.get_or_404(id)
+    if form.validate_on_submit():
+        item.set_name(form.name.data)
+        item.set_unit(form.unit.data)
+        item.set_quantity(form.quantity.data)
+        item.set_room(form.room.data)
+        db.session.add(item)
+        db.session.commit()
+        flash('Item alterado com sucesso.')
+        return redirect(url_for('item_list'))
+    elif request.method == 'GET':
+        form.name.data = item.name
+        form.quantity.data = item.quantity
+        form.unit.data = item.unit
+        form.room.data = item.room
+    return render_template('item/edit.html', title='Editar item', form=form)
 
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required

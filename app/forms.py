@@ -38,3 +38,12 @@ class ItemAddForm(FlaskForm):
     room = SelectField('Local', choices = [('Container 1 (Mec)', 'Container 1 (Mec)'),
         ('Container 2 (Elet)', 'Container 2 (Elet)')])
     submit = SubmitField('Cadastrar')
+
+
+class ItemEditForm(FlaskForm):
+    name = StringField('Nome', validators=[DataRequired()])
+    quantity = FloatField('Quantidade', validators=[DataRequired()])
+    unit = SelectField('Unidade', choices = [('UND', 'UND'), ('CX', 'CX')])
+    room = SelectField('Local', choices = [('Container 1 (Mec)', 'Container 1 (Mec)'),
+        ('Container 2 (Elet)', 'Container 2 (Elet)')])
+    submit = SubmitField('Alterar')
