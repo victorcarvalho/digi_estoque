@@ -74,7 +74,7 @@ def item_add():
 @app.route('/item_list', methods=['GET', 'POST'])
 @login_required
 def item_list():
-    items = Item.query.all()
+    items = Item.query.order_by(Item.name.asc())
     return render_template('item/list.html', title='Listar itens', items=items)
 
 
