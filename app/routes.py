@@ -2,9 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import logout_user, current_user, login_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ItemAddForm, ItemEditForm
-from app.models import User, Item
-
+from app.forms import LoginForm, RegistrationForm, ItemAddForm, ItemEditForm, OrderAddForm
+from app.models import User, Item, Order
+from datetime import datetime
 
 
 @app.route('/')
@@ -14,7 +14,6 @@ def index():
     return render_template('index.html', title='Home')
 
 
-# the flask default method is only GET
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -71,7 +70,7 @@ def item_add():
     return render_template('item/add.html', title='Cadastrar item', form=form)
 
 
-@app.route('/item_list', methods=['GET', 'POST'])
+@app.route('/item_list')
 @login_required
 def item_list():
     items = Item.query.order_by(Item.name.asc())
@@ -119,3 +118,38 @@ def item_dec(id):
     db.session.commit()
     flash('Item decrementado com sucesso.')
     return redirect(url_for('item_list'))
+
+
+@app.route('/order_add/<int:id>', methods=['GET', 'POST'])
+@login_required
+def order_add(id):
+    form = OrderAddForm()
+    item = Item.query.get_or_404(id)
+    if form.validate_on_submit():
+        if form.quantity.data > item.quantity:
+            flash('ERRO: a quantidade desejada eh maior que a disponivel')
+        else:
+            item.decrease_quantity(form.quantity.data)
+            db.session.add(item)
+            order = Order()
+            order.set_item_name(item.name)
+            order.set_orderer(form.orderer.data)
+            order.set_date(form.date.data)
+            order.set_quantity(form.quantity.data)
+            order.set_addit_info(form.addit_info.data)
+            db.session.add(order)
+            db.session.commit()
+            flash('Pedido cadastrado com sucesso.')
+        return redirect(url_for('item_list'))
+    elif request.method == 'GET':
+        form.date.data = str(datetime.now())
+        form.item_name.data = item.name
+        form.curr_quantity.data = item.quantity
+    return render_template('order/add.html', title='Cadastrar pedido', form=form)
+
+
+@app.route('/order_list')
+@login_required
+def order_list():
+    orders = Order.query.order_by(Order.date.desc())
+    return render_template('order/list.html', title='Listar pedidos', orders=orders)

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>Bem vindo (a), {{ current_user.username }}.</h1>
+<h1>Bem vindo (a), {{ current_user.username }}.</h1>
+<h3>
+  Clique <a href="{{ url_for('item_list') }}">aqui</a> para ver a lista de
+  materiais
+</h3>
 {% endblock %}

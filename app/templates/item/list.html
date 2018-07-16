@@ -19,8 +19,7 @@
             <th class="text-center">Unidade</th>
             <th class="text-center">Local</th>
             <th class="text-center">Excluir</th>
-            <th class="text-center">Diminuir (-1)</th>
-            <th class="text-center">Editar</th>
+            <th class="text-center">Cadastrar pedido</th>
      		</tr>
      	</thead>
      	<tbody class="text-center">
@@ -36,15 +35,12 @@
                   <span class="glyphicon glyphicon-trash"></span>
               </a>
             </td>
-            <td id="decrementar">
-              <a href="{{ url_for('item_dec', id=item.id) }}">
-                  <span class="glyphicon glyphicon-minus-sign"></span>
-              </a>
-            </td>
-            <td id="editar">
-              <a href="{{ url_for('item_edit', id=item.id) }}">
+            <td id="cadastrar_pedido">
+              {% if item.quantity > 0 %}
+              <a href="{{ url_for('order_add', id=item.id) }}">
                   <span class="glyphicon glyphicon-edit"></span>
               </a>
+              {% endif %}
             </td>
      		</tr>
      		{% endfor %}

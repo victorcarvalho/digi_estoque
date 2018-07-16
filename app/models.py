@@ -1,6 +1,7 @@
 from app import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 
 
@@ -49,3 +50,29 @@ class Item(db.Model):
     def decrease_quantity(self, quantity):
         self.quantity = self.quantity - quantity
         return self.quantity
+
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # deve ser substituido por uma chave estrangeira na prox versao
+    item_name = db.Column(db.String(50), index=True)
+    date = db.Column(db.String(50))
+    #date = db.Column(db.DateTime, default=datetime.utcnow)
+    orderer = db.Column(db.String(50), index=True)
+    quantity = db.Column(db.Float)
+    addit_info = db.Column(db.String(140))
+
+    def set_item_name(self, item_name):
+        self.item_name = item_name
+
+    def set_orderer(self, orderer):
+        self.orderer = orderer
+
+    def set_date(self, date):
+        self.date = date
+
+    def set_quantity(self, quantity):
+        self.quantity = quantity
+
+    def set_addit_info(self, addit_info):
+        self.addit_info = addit_info

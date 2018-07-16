@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField, DateField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -47,3 +47,16 @@ class ItemEditForm(FlaskForm):
     room = SelectField('Local', choices = [('Container 1 (Mec)', 'Container 1 (Mec)'),
         ('Container 2 (Elet)', 'Container 2 (Elet)')])
     submit = SubmitField('Alterar')
+
+
+class OrderAddForm(FlaskForm):
+    item_name = StringField('Item', validators=[DataRequired()],
+        render_kw={'readonly': True})
+    curr_quantity = FloatField('Disponivel', validators=[DataRequired()],
+        render_kw={'readonly': True})
+    date = StringField('Data', validators=[DataRequired()])
+    #date = DateField(validators=[DataRequired()], format='%d/%m/%Y')
+    orderer = StringField('Solicitante', validators=[DataRequired()])
+    quantity = FloatField('Quantidade', validators=[DataRequired()])
+    addit_info = StringField('Observacao')
+    submit = SubmitField('Cadastrar')
