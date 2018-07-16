@@ -109,6 +109,16 @@ def item_edit(id):
         form.room.data = item.room
     return render_template('item/edit.html', title='Editar item', form=form)
 
+
+@app.route('/item_orders/<int:id>', methods=['GET', 'POST'])
+@login_required
+def item_orders(id):
+    item = Item.query.get_or_404(id)
+    orders = Order.query.filter_by(item_name=item.name)
+    return render_template('order/list.html', title='Pedidos relacionados',
+        orders=orders)
+
+
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required
 def item_dec(id):
@@ -153,3 +163,13 @@ def order_add(id):
 def order_list():
     orders = Order.query.order_by(Order.date.desc())
     return render_template('order/list.html', title='Listar pedidos', orders=orders)
+
+
+@app.route('/order_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def order_delete(id):
+    order = Order.query.get_or_404(id)
+    db.session.delete(order)
+    db.session.commit()
+    flash('Pedido excluido com sucesso.')
+    return redirect(url_for('order_list'))

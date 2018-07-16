@@ -20,6 +20,7 @@
             <th class="text-center">Local</th>
             <th class="text-center">Excluir</th>
             <th class="text-center">Cadastrar pedido</th>
+            <th class="text-center">Ver pedidos</th>
      		</tr>
      	</thead>
      	<tbody class="text-center">
@@ -38,9 +39,14 @@
             <td id="cadastrar_pedido">
               {% if item.quantity > 0 %}
               <a href="{{ url_for('order_add', id=item.id) }}">
-                  <span class="glyphicon glyphicon-edit"></span>
+                  <span class="glyphicon glyphicon-pencil"></span>
               </a>
               {% endif %}
+            </td>
+            <td id="ver_pedidos">
+              <a href="{{ url_for('item_orders', id=item.id) }}">
+                  <span class="glyphicon glyphicon-th-list"></span>
+              </a>
             </td>
      		</tr>
      		{% endfor %}
@@ -48,5 +54,4 @@
     </table>
   </div>
 </div>
-
 {% endblock %}
