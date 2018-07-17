@@ -5,6 +5,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, ItemAddForm, ItemEditForm, OrderAddForm
 from app.models import User, Item, Order
 from datetime import datetime
+from babel.dates import format_date
 
 
 @app.route('/')
@@ -152,7 +153,7 @@ def order_add(id):
             flash('Pedido cadastrado com sucesso.')
         return redirect(url_for('item_list'))
     elif request.method == 'GET':
-        form.date.data = str(datetime.now())
+        form.date.data = format_date(datetime.now(), 'dd/MM/yy')
         form.item_name.data = item.name
         form.curr_quantity.data = item.quantity
     return render_template('order/add.html', title='Cadastrar pedido', form=form)

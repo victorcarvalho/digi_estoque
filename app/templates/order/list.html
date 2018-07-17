@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
+
 {% block app_content %}
+
+<script>
+function mensagem() {
+  return confirm("Tem certeza que deseja excluir o pedido?");
+}
+</script>
 
 {% if orders.count() > 0 %}
 
@@ -24,7 +31,6 @@
        	</thead>
        	<tbody class="text-center">
 
-
        		{% for order in orders %}
        		<tr>
               <td id="data">{{ order.date }}</td>
@@ -32,15 +38,10 @@
               <td id="quantitidade">{{ order.quantity }}</td>
               <td id="unidade">{{ order.orderer }}</td>
               <td id="excluir">
-                <a href="{{ url_for('order_delete', id=order.id) }}">
+                <a href="{{ url_for('order_delete', id=order.id) }}" onclick="return mensagem()" >
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>
               </td>
-              <!-- <td id="cadastrar_pedido">
-                <a href="asdf">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </a>
-              </td> -->
        		</tr>
        		{% endfor %}
        	</tbody>
@@ -50,5 +51,6 @@
 {% else %}
   <h3>Não há pedidos cadastrados.</h3>
 {% endif %}
+
 
 {% endblock %}
