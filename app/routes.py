@@ -117,14 +117,14 @@ def item_orders(id):
     item = Item.query.get_or_404(id)
     orders = Order.query.filter_by(item_name=item.name)
     return render_template('order/list.html', title='Pedidos relacionados',
-        orders=orders)
+                           orders=orders)
 
 
 @app.route('/item_dec/<int:id>', methods=['GET', 'POST'])
 @login_required
 def item_dec(id):
     item = Item.query.get_or_404(id)
-    item.decrease_quantity(1) # decrementa quantidade em uma unidade
+    item.decrease_quantity(1)  # decrementa quantidade em uma unidade
     db.session.add(item)
     db.session.commit()
     flash('Item decrementado com sucesso.')
