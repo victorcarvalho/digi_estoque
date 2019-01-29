@@ -153,7 +153,7 @@ def order_add(id):
             flash('Pedido cadastrado com sucesso.')
         return redirect(url_for('item_list'))
     elif request.method == 'GET':
-        form.date.data = format_date(datetime.now(), 'dd/MM/yy')
+        #form.date.data = None
         form.item_name.data = item.name
         form.curr_quantity.data = item.quantity
     return render_template('order/add.html', title='Cadastrar pedido', form=form)

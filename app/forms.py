@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField, DateField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.fields.html5 import DateField
+from datetime import date
 from app.models import User
 
 
@@ -54,8 +56,7 @@ class OrderAddForm(FlaskForm):
         render_kw={'readonly': True})
     curr_quantity = FloatField('Disponivel', validators=[DataRequired()],
         render_kw={'readonly': True})
-    date = StringField('Data', validators=[DataRequired()])
-    #date = DateField(validators=[DataRequired()], format='%d/%m/%Y')
+    date = DateField('Data', validators=[DataRequired()], format='%d/%m/%Y')
     orderer = StringField('Solicitante', validators=[DataRequired()])
     quantity = FloatField('Quantidade', validators=[DataRequired()])
     addit_info = StringField('Observacao')
